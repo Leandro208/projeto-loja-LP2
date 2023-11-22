@@ -2,6 +2,9 @@ package br.ufrn.loja.view;
 
 import java.util.Scanner;
 
+import br.ufrn.loja.dao.ProdutoDao;
+import br.ufrn.loja.model.Produto;
+import br.ufrn.loja.movement.ProdutoMoviment;
 import br.ufrn.loja.utils.CorUtils;
 
 public class Menu {
@@ -38,7 +41,7 @@ public class Menu {
 			telaInicial();
 			realizarAcao();
 		}
-
+		in.close();
 		System.out.println(CorUtils.verde("Programa Encerrado!"));
 	}
 
@@ -65,7 +68,7 @@ public class Menu {
 	private void realizarAcao() {
 		switch (opcao) {
 		case CADASTRAR:
-			System.out.println("cadastrar");
+			new ProdutoMoviment().processar(opcao, in);
 			break;
 
 		case BUSCAR:
@@ -88,5 +91,17 @@ public class Menu {
 			System.out.println("Valor Invalido!");// criar uma exceção
 		}
 	}
+	
+	public void cadastrar() {
+		Produto produto = new Produto();
+		produto.setNome("Smartphone");
+		produto.setPreco(3200);
+		produto.setEstoque(3);
+		produto.setFabricante("Xiaomi");
+		
+		ProdutoDao dao = new ProdutoDao();
+		dao.salvar(produto);
+	}
+	
 
 }
