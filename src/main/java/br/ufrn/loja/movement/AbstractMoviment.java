@@ -1,6 +1,6 @@
 package br.ufrn.loja.movement;
 
-import java.util.Scanner;
+import br.ufrn.loja.dao.GenericDao;
 
 /**
  * @brief Classe abstrata que define operações básicas de movimentação (CRUD).
@@ -8,14 +8,14 @@ import java.util.Scanner;
  * @tparam E Tipo de objeto manipulado pela classe.
  * @tparam T Tipo de DAO  associado à classe.
  */
-public abstract class AbstractMoviment<E, T> {
+public abstract class AbstractMoviment<E> {
 	public static final int CRIAR = 1;
 	public static final int ALTERAR = 2;
 	public static final int REMOVER = 3;
 	public static final int CONSULTAR = 4;
 
 	protected E objeto;
-	protected T dao;
+	protected GenericDao<E> dao;
 
 	 /**
      * @brief Processa a operação solicitada.
@@ -23,10 +23,10 @@ public abstract class AbstractMoviment<E, T> {
      * @param opcao A operação a ser realizada.
      * @param in Scanner para entrada de dados.
      */
-	public void processar(int opcao, Scanner in) {
+	public void processar(int opcao) {
 		switch (opcao) {
 		case CRIAR: 
-			cadastrar(in);
+			cadastrar();
 			break;
 		case CONSULTAR:
 			System.out.println("Consultando");
@@ -44,18 +44,21 @@ public abstract class AbstractMoviment<E, T> {
 	}
 	
 	/**
-     * @brief Método abstrato para realizar o cadastro de um objeto.
+     * @brief Método que prepara para o cadastro de um objeto.
      *
      * @param in Scanner para entrada de dados.
      */
-	protected abstract void cadastrar(Scanner in);
+	protected void cadastrar() {	
+		if(validar()) {
+			dao.salvar(objeto);
+		}
+	}
 	
 	/**
-     * @brief Método abstrato para ler os dados do objeto.
-     *
-     * @param in Scanner para entrada de dados.
-     */
-	protected abstract void lerDados(Scanner in);
+	 * Valida o objeto
+	 * @return true ou false
+	 */
+	protected abstract boolean validar();
 	
 	 /**
      * @brief Método abstrato para consultar o objeto.

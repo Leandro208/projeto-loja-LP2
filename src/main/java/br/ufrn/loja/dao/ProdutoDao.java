@@ -15,7 +15,7 @@ import br.ufrn.loja.model.Produto;
  */
 public class ProdutoDao implements GenericDao<Produto> {
 
-	private final String INSERT = "INSERT INTO produto(nome, preco, estoque, fabricante) VALUES (?, ?, ?, ?)";
+	private final String INSERT = "INSERT INTO produto(nome, preco_custo, preco_venda, estoque, fabricante) VALUES (?, ?, ?, ?, ?)";
 	private Connection con;
 	private PreparedStatement pstm;
 	
@@ -32,9 +32,10 @@ public class ProdutoDao implements GenericDao<Produto> {
 			con = ConnectionFactory.getInstance();
 			pstm = (PreparedStatement) con.prepareStatement(INSERT);
 			pstm.setString(1, obj.getNome());
-			pstm.setDouble(2, obj.getPreco());
-			pstm.setInt(3, obj.getEstoque());
-			pstm.setString(4, obj.getFabricante());
+			pstm.setDouble(2, obj.getPreco_custo());
+			pstm.setDouble(3, obj.getPreco_venda());
+			pstm.setInt(4, obj.getEstoque());
+			pstm.setString(5, obj.getFabricante());
 
 			pstm.execute();
 		} catch (Exception e) {

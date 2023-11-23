@@ -1,40 +1,17 @@
 package br.ufrn.loja.movement;
 
-import java.util.Scanner;
 
 import br.ufrn.loja.dao.ProdutoDao;
 import br.ufrn.loja.model.Produto;
 
-public class ProdutoMoviment extends AbstractMoviment<Produto, ProdutoDao> {
+public class ProdutoMoviment extends AbstractMoviment<Produto> {
 
 	public ProdutoMoviment() {
-		dao = new ProdutoDao();
-	}
-	@Override
-	protected void cadastrar(Scanner in) {
-		lerDados(in);	
-		dao.salvar(objeto);
-	}
-
-	@Override
-	protected void lerDados(Scanner in) {
-		in.nextLine();
 		
-		System.out.print("Digite o nome do produto: ");
-        String nome = in.nextLine();
-
-        System.out.print("Digite o preço do produto: ");
-        double preco = in.nextDouble();
-        in.nextLine();
-
-        System.out.print("Digite o estoque do produto: ");
-        int estoque = in.nextInt();
-        in.nextLine();
-
-        System.out.print("Digite o fabricante do produto: ");
-        String fabricante = in.nextLine();
-
-        objeto = new Produto(nome, preco, estoque, fabricante);
+	}
+	public ProdutoMoviment(Produto produto) {
+		objeto = produto;
+		dao = new ProdutoDao();
 	}
 
 	@Override
@@ -53,6 +30,14 @@ public class ProdutoMoviment extends AbstractMoviment<Produto, ProdutoDao> {
 	protected void remover() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	protected boolean validar() {
+		if(objeto.getNome() == null || objeto.getNome().isEmpty()) {
+			System.out.println("\nVocê não digitou o nome do produto\n");
+			return false;
+		}
+		return true;
 	}
 	
 	
