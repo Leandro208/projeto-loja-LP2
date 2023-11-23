@@ -3,7 +3,7 @@ package br.ufrn.loja.view;
 import java.util.Scanner;
 
 import br.ufrn.loja.model.Produto;
-import br.ufrn.loja.movement.ProdutoMoviment;
+import br.ufrn.loja.services.ProdutoService;
 import br.ufrn.loja.utils.CorUtils;
 
 public class TelaCadastro {
@@ -58,7 +58,7 @@ public class TelaCadastro {
 		switch (opcao) {
 		case PRODUTO_COMUM: 
 			lerProdutoComum();
-			new ProdutoMoviment(produtoComum).processar(Menu.CADASTRAR);
+			new ProdutoService(produtoComum).processar(Menu.CADASTRAR);
 			break;
 		case SAIR:
 			this.saiu = true;
@@ -72,7 +72,7 @@ public class TelaCadastro {
 	 * @brief Método que pergunta ao usuário se deseja continuar cadastrando.
 	 */
 	public void continuar() {
-		System.out.println("Digite" +SAIR+" para sair ou qualquer numero para continuar cadastrando?");
+		System.out.println("Digite "+SAIR+" para sair ou qualquer numero para continuar cadastrando?");
 		this.opcao = in.nextInt();
 		if(opcao == SAIR)
 			this.saiu = true;

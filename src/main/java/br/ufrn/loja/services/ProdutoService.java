@@ -1,15 +1,15 @@
-package br.ufrn.loja.movement;
+package br.ufrn.loja.services;
 
 
 import br.ufrn.loja.dao.ProdutoDao;
 import br.ufrn.loja.model.Produto;
 
-public class ProdutoMoviment extends AbstractMoviment<Produto> {
+public class ProdutoService extends AbstractService<Produto> {
 
-	public ProdutoMoviment() {
+	public ProdutoService() {
 		
 	}
-	public ProdutoMoviment(Produto produto) {
+	public ProdutoService(Produto produto) {
 		objeto = produto;
 		dao = new ProdutoDao();
 	}

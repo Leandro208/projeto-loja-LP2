@@ -1,4 +1,4 @@
-package br.ufrn.loja.movement;
+package br.ufrn.loja.services;
 
 import br.ufrn.loja.dao.GenericDao;
 
@@ -6,9 +6,9 @@ import br.ufrn.loja.dao.GenericDao;
  * @brief Classe abstrata que define operações básicas de movimentação (CRUD).
  *
  * @tparam E Tipo de objeto manipulado pela classe.
- * @tparam T Tipo de DAO  associado à classe.
+ * 
  */
-public abstract class AbstractMoviment<E> {
+public abstract class AbstractService<E> {
 	public static final int CRIAR = 1;
 	public static final int ALTERAR = 2;
 	public static final int REMOVER = 3;
@@ -21,7 +21,6 @@ public abstract class AbstractMoviment<E> {
      * @brief Processa a operação solicitada.
      *
      * @param opcao A operação a ser realizada.
-     * @param in Scanner para entrada de dados.
      */
 	public void processar(int opcao) {
 		switch (opcao) {
@@ -46,7 +45,6 @@ public abstract class AbstractMoviment<E> {
 	/**
      * @brief Método que prepara para o cadastro de um objeto.
      *
-     * @param in Scanner para entrada de dados.
      */
 	protected void cadastrar() {	
 		if(validar()) {
