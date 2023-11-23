@@ -6,11 +6,11 @@ import br.ufrn.loja.utils.CorUtils;
 
 public class Menu {
 
-	private static final int SAIR = 0;
-	private static final int CADASTRAR = 1;
-	private static final int BUSCAR = 2;
-	private static final int VER_TODOS = 3;
-	private static final int FATURAMENTO = 4;
+	public static final int SAIR = 0;
+	public static final int CADASTRAR = 1;
+	public static final int BUSCAR = 2;
+	public static final int VER_TODOS = 3;
+	public static final int FATURAMENTO = 4;
 
 	private int opcao;
 	private boolean saiu;
@@ -38,7 +38,7 @@ public class Menu {
 			telaInicial();
 			realizarAcao();
 		}
-
+		in.close();
 		System.out.println(CorUtils.verde("Programa Encerrado!"));
 	}
 
@@ -47,12 +47,12 @@ public class Menu {
 	 */
 	private void telaInicial() {
 
-		System.out.println("\nDigite a opção: ");
-		System.out.println("1 - Cadastrar Produto");
-		System.out.println("2 - Buscar Produto");
-		System.out.println("3 - Ver todos os produtos");
-		System.out.println("4 - Ver faturamento");
-		System.out.println("0 - sair");
+		System.out.println("\n"+CorUtils.laranja("Digite a opção:"));
+		System.out.println(CADASTRAR + " - Cadastrar Produto");
+		System.out.println(BUSCAR + " - Buscar Produto");
+		System.out.println(VER_TODOS + " - Ver todos os produtos");
+		System.out.println(FATURAMENTO + " - Ver faturamento");
+		System.out.println(SAIR + " - sair");
 
 		this.opcao = in.nextInt();
 
@@ -65,7 +65,7 @@ public class Menu {
 	private void realizarAcao() {
 		switch (opcao) {
 		case CADASTRAR:
-			System.out.println("cadastrar");
+			new TelaCadastro(in).run();
 			break;
 
 		case BUSCAR:
@@ -88,5 +88,4 @@ public class Menu {
 			System.out.println("Valor Invalido!");// criar uma exceção
 		}
 	}
-
 }
