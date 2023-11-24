@@ -7,10 +7,6 @@ import br.ufrn.loja.model.Produto;
 public class ProdutoService extends AbstractService<Produto> {
 
 	public ProdutoService() {
-		
-	}
-	public ProdutoService(Produto produto) {
-		objeto = produto;
 		dao = new ProdutoDao();
 	}
 

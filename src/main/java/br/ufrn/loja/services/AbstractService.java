@@ -72,4 +72,14 @@ public abstract class AbstractService<E> {
      * @brief Método abstrato para remover o objeto.
      */
 	protected abstract void remover();
+
+	public E getObjeto() {
+		return objeto;
+	}
+
+	public void setObjeto(E objeto) {
+		this.objeto = objeto;
+	}
+	
+	
 }

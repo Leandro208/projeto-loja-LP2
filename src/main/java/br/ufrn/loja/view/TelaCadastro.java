@@ -3,20 +3,21 @@ package br.ufrn.loja.view;
 import java.util.Scanner;
 
 import br.ufrn.loja.model.Produto;
+import br.ufrn.loja.services.AbstractService;
 import br.ufrn.loja.services.ProdutoService;
 import br.ufrn.loja.utils.CorUtils;
 
 public class TelaCadastro {
 	
 	private final int SAIR = 0;
-
 	private final int PRODUTO_COMUM = 1;
 	
 	private int opcao;
 	private boolean saiu = false;
 	private Scanner in;
-	
 	private Produto produtoComum;
+	
+	private AbstractService<Produto> produtoService = new ProdutoService();
 	
 	public TelaCadastro(Scanner in) {
 		this.in = in;
@@ -58,7 +59,7 @@ public class TelaCadastro {
 		switch (opcao) {
 		case PRODUTO_COMUM: 
 			lerProdutoComum();
-			new ProdutoService(produtoComum).processar(Menu.CADASTRAR);
+			produtoService.processar(Menu.CADASTRAR);
 			break;
 		case SAIR:
 			this.saiu = true;
@@ -72,14 +73,14 @@ public class TelaCadastro {
 	 * @brief Método que pergunta ao usuário se deseja continuar cadastrando.
 	 */
 	public void continuar() {
-		System.out.println("Digite "+SAIR+" para sair ou qualquer numero para continuar cadastrando?");
+		System.out.println("\n[Digite "+SAIR+" para sair ou qualquer numero para continuar cadastrando.]");
 		this.opcao = in.nextInt();
 		if(opcao == SAIR)
 			this.saiu = true;
 	}
 	
 	/**
-	 * @brief Método que lê os dados de um produto comum.
+	 * @brief Método que lê os dados de um produto comum e seta no service.
 	 */
 	private void lerProdutoComum() {
 		in.nextLine();
@@ -102,6 +103,7 @@ public class TelaCadastro {
         String fabricante = in.nextLine();
 
         produtoComum = new Produto(nome, preco_custo, preco_venda, estoque, fabricante);
+        produtoService.setObjeto(produtoComum);
 	}
 	
 	
