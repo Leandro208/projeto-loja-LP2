@@ -2,19 +2,10 @@ package br.ufrn.loja.view;
 
 import java.util.Scanner;
 
-
+import br.ufrn.loja.exception.OpcaoInvalidaException;
 import br.ufrn.loja.model.Produto;
-import br.ufrn.loja.services.AbstractService;
-import br.ufrn.loja.services.ProdutoService;
-import br.ufrn.loja.utils.CorUtils;
 
-public class TelaBusca {
-
-	private Scanner in;
-	private int opcao;
-	private AbstractService<Produto> produtoService = new ProdutoService();
-	public static final int REMOVER = 4;
-	public static final int ALTERAR = 5;
+public class TelaBusca extends MenuAbstract {
 
 	public TelaBusca(Scanner in) {
 		this.in = in;
@@ -22,63 +13,50 @@ public class TelaBusca {
 	}
 
 	/**
-	 * @brief Método que inicia a execução da TelaBusca.
+	 * Método que inicia a execução da TelaBusca.
 	 */
 	public void run(int opcao) {
 		this.opcao = opcao;
 		switch (this.opcao) {
-			case Menu.VER_TODOS:
-				produtoService.processar(opcao);
-				break;
-			case Menu.BUSCAR:
-				buscar();
-				break;
-			default:
-				System.out.println("Erro");
-			}
+		case VER_TODOS:
+			produtoService.processar(VER_TODOS);
+			break;
+		case BUSCAR:
+			buscarProduto();
+			break;
+		default:
+			throw new OpcaoInvalidaException("Opção inválida! Por favor, escolha uma opção válida.");
+		}
 	}
 
-	private void buscar() {
+	private void buscarProduto() {
 		System.out.println("Digite o ID para a busca");
 		produtoService.getObjeto().setId(in.nextInt());
-		if (produtoService.buscar()) {
-			System.out.println("[0] Voltar   [4]Remover    [5]Alterar");
-			opcao = in.nextInt();
 
-			if (opcao != Menu.SAIR) {
-				if (opcao == REMOVER ) {
-					produtoService.processar(opcao);
-				} else if (opcao == ALTERAR) {
-					alterar();
-				} else {
-					System.out.println(CorUtils.vermelho("Valor Invelido!"));
-				}
+		if (produtoService.buscar()) {
+			exibirOpcoesAlteracaoRemocao();
+		}
+	}
+
+	private void exibirOpcoesAlteracaoRemocao() {
+		System.out.println("[" + SAIR + "] Voltar   [" + REMOVER + "] Remover    [" + ALTERAR + "] Alterar");
+		opcao = in.nextInt();
+
+		if (opcao != SAIR) {
+			if (opcao == REMOVER) {
+				produtoService.processar(REMOVER);
+			} else if (opcao == ALTERAR) {
+				alterarProduto();
+			} else {
+				throw new OpcaoInvalidaException("Opção inválida!");
 			}
 		}
-
 	}
-	
-	private void alterar() {
-		in.nextLine();
 
-		System.out.print("Digite o nome do produto: ");
-		produtoService.getObjeto().setNome(in.nextLine());
-
-		System.out.print("Digite o preço de custo do produto: ");
-		produtoService.getObjeto().setPreco_custo(in.nextDouble());
-
-		System.out.print("Digite o preço de venda do produto: ");
-		produtoService.getObjeto().setPreco_venda(in.nextDouble());
-		in.nextLine();
-
-		System.out.print("Digite o estoque do produto: ");
-		produtoService.getObjeto().setEstoque(in.nextInt());
-		in.nextLine();
-
-		System.out.print("Digite o fabricante do produto: ");
-		produtoService.getObjeto().setFabricante(in.nextLine());
-
+	private void alterarProduto() {
+		int id = produtoService.getObjeto().getId();
+		produtoService.setObjeto(lerProduto());
+		produtoService.getObjeto().setId(id);
 		produtoService.processar(ALTERAR);
 	}
-
 }

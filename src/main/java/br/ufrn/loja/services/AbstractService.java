@@ -1,6 +1,8 @@
 package br.ufrn.loja.services;
 
 import br.ufrn.loja.dao.GenericDao;
+import br.ufrn.loja.utils.CorUtils;
+import br.ufrn.loja.view.MenuAbstract;
 
 /**
  * @brief Classe abstrata que define operações básicas de movimentação (CRUD).
@@ -9,13 +11,7 @@ import br.ufrn.loja.dao.GenericDao;
  * 
  */
 public abstract class AbstractService<E> {
-	public static final int CRIAR = 1;
-	public static final int BUSCAR = 2;
-	public static final int VER_TODOS = 3;
-	public static final int REMOVER = 4;
-	public static final int ALTERAR = 5;
 	
-
 	protected E objeto;
 	protected GenericDao<E> dao;
 
@@ -26,16 +22,16 @@ public abstract class AbstractService<E> {
      */
 	public void processar(int opcao) {
 		switch (opcao) {
-		case CRIAR: 
+		case MenuAbstract.CADASTRAR: 
 			cadastrar();
 			break;
-		case VER_TODOS:
+		case MenuAbstract.VER_TODOS:
 			imprimir();
 			break;
-		case ALTERAR:
+		case MenuAbstract.ALTERAR:
 			alterar();
 			break;
-		case REMOVER:
+		case MenuAbstract.REMOVER:
 			remover();
 			break;
 		default:
@@ -53,6 +49,7 @@ public abstract class AbstractService<E> {
 	protected void cadastrar() {	
 		if(validar()) {
 			dao.salvar(objeto);
+			System.out.println(CorUtils.azul("Cadastro realizado com sucesso!"));
 		}
 	}
 	
@@ -67,6 +64,7 @@ public abstract class AbstractService<E> {
      */
 	protected  void alterar() {
 		dao.alterar(objeto);
+		System.out.println(CorUtils.azul("Alteração realizada com sucesso!"));
 	}
 	
 	/**
@@ -86,6 +84,4 @@ public abstract class AbstractService<E> {
 	public void setObjeto(E objeto) {
 		this.objeto = objeto;
 	}
-	
-	
 }

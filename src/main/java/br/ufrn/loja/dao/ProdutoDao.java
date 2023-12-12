@@ -9,6 +9,7 @@ import java.util.List;
 
 import br.ufrn.loja.infra.ConnectionFactory;
 import br.ufrn.loja.model.Produto;
+import br.ufrn.loja.model.ProdutoBuilder;
 
 /**
  * @brief Implementação do DAO para a entidade Produto.
@@ -30,7 +31,7 @@ public class ProdutoDao implements GenericDao<Produto> {
 		con = ConnectionFactory.getInstance().getConnection();
 	}
 
-	
+
 	@Override
 	public void salvar(Produto obj) {
 		try {
@@ -52,13 +53,15 @@ public class ProdutoDao implements GenericDao<Produto> {
 			statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(SELECT_ALL);
 			while (rs.next()) {
-				Produto produto = new Produto();
-				produto.setId(rs.getInt("id"));
-				produto.setNome(rs.getString("nome"));
-				produto.setPreco_custo(rs.getDouble("preco_custo"));
-				produto.setPreco_venda(rs.getDouble("preco_venda"));
-				produto.setEstoque(rs.getInt("estoque"));
-				produto.setFabricante(rs.getString("fabricante"));
+
+				Produto produto = new ProdutoBuilder()
+						.comId(rs.getInt("id"))
+						.comNome(rs.getString("nome"))
+						.comPrecoCusto(rs.getDouble("preco_custo"))
+						.comPrecoVenda(rs.getDouble("preco_venda"))
+						.comEstoque(rs.getInt("estoque"))
+						.comFabricante(rs.getString("fabricante")).build();
+
 				resultado.add(produto);
 			}
 		} catch (SQLException e) {
@@ -71,24 +74,25 @@ public class ProdutoDao implements GenericDao<Produto> {
 
 	@Override
 	public Produto buscarPorId(int id) {
-		Produto produto = new Produto();
 		try {
 			statement = con.createStatement();
 			ResultSet result = statement.executeQuery(SELECT + id);
 			if (result.next()) {
-				produto.setId(result.getInt("id"));
-				produto.setNome(result.getString("nome"));
-				produto.setPreco_custo(result.getDouble("preco_custo"));
-				produto.setPreco_venda(result.getDouble("preco_venda"));
-				produto.setEstoque(result.getInt("estoque"));
-				produto.setFabricante(result.getString("fabricante"));
+				Produto produto = new ProdutoBuilder()
+						.comId(result.getInt("id"))
+						.comNome(result.getString("nome"))
+						.comPrecoCusto(result.getDouble("preco_custo"))
+						.comPrecoVenda(result.getDouble("preco_venda"))
+						.comEstoque(result.getInt("estoque"))
+						.comFabricante(result.getString("fabricante")).build();
+				return produto;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			fecharRecursos();
 		}
-		return produto;
+		return null;
 	}
 
 	@Override
@@ -133,6 +137,18 @@ public class ProdutoDao implements GenericDao<Produto> {
 		}
 	}
 	
+	public void alterarEstoque(int id, int novoEstoque) {
+		try {
+			statement = con.createStatement();
+			String sql = "UPDATE produto SET estoque = " + novoEstoque + " WHERE id = " + id;
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			fecharRecursos();
+		}
+	}
+
 	/**
 	 * @brief Fecha os recursos (Statement) utilizados para interagir com o banco de
 	 *        dados.
@@ -146,5 +162,7 @@ public class ProdutoDao implements GenericDao<Produto> {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 }
